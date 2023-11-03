@@ -1,0 +1,61 @@
+﻿/*@!Encoding:65001*/
+includes
+{
+  
+}
+
+variables
+{
+  message ww_output ww;
+}
+on message fluid_battery_rain
+{
+  if(this.Fluid_tank_status==1)
+  {
+    ww.Washer_op=1;
+    ww.warningLamp1=0;
+  }
+  else
+  {
+    ww.Washer_op=0;
+    ww.warningLamp1=1;
+  }
+  
+  if(this.Battery_status==1)
+  {
+    ww.Headlight_Washer=1;
+  }
+  else{
+    ww.Headlight_Washer=0;
+  }
+  
+  if(this.Rain_status==1)
+  {
+    ww.warningLamp2=1;
+    if(this.Front_switch==1&& this.Rear_switch==1)
+    {
+      ww.Front_Wiper=1;
+      ww.Rear_Wiper=1;
+    }
+    else if(this.Front_switch==1&& this.Rear_switch==0)
+    {
+      ww.Front_Wiper=1;
+      ww.Rear_Wiper=0;
+    }
+   else if(this.Front_switch==0&& this.Rear_switch==1)
+    {
+      ww.Front_Wiper=0;
+      ww.Rear_Wiper=1;
+    }
+    else
+    {
+      ww.Front_Wiper=0;
+      ww.Rear_Wiper=0;
+    }
+  }
+  else{
+    ww.warningLamp2=0;
+  }
+  
+  output(ww);
+}

@@ -1,0 +1,44 @@
+﻿/*@!Encoding:65001*/
+includes
+{
+  
+}
+
+variables
+{
+  int VehicleSpeed;
+  message Dashboard_msg db;
+}
+on start
+{
+   write("Dashboard ECU started");
+}
+on message Wheel_speed_msg
+{
+  VehicleSpeed=(this.Wheel_speed_FL+this.Wheel_speed_FR+this.Wheel_speed_RL+this.Wheel_speed_RR)/4;
+}
+on message Seatbelt_status
+{
+  if(this.seat_belt_status==0 && VehicleSpeed>10)
+  {
+    db.Buzzar_status=1;
+   
+  }
+  else{
+    db.Buzzar_status=0;
+  }
+  output(db);
+   @sysvar::CAN_mini_var::Buzzer=db.Buzzar_status;
+}
+on message Door_status
+{
+  if(this.Door_FL==0||this.Door_FR==0||this.Door_RL==0||this.Door_RR==0)
+  {
+    db.lamp_status=1;
+  }
+  else{
+    db.lamp_status=0;
+  }
+  output(db);
+  @sysvar::CAN_mini_var::Lamp=db.lamp_status;
+}

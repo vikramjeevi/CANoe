@@ -1,0 +1,31 @@
+﻿/*@!Encoding:65001*/
+includes
+{
+  
+}
+
+variables
+{
+  message Door_status d;
+  message Seatbelt_status s;
+  msTimer time;
+  
+}
+on start 
+{
+  setTimer(time,1000);
+  write("BCM ECU started");
+}
+on timer time
+{
+  setTimer(time,1000);
+  d.Door_FL=@sysvar::CAN_mini_var::FL_door;
+  d.Door_FR=@sysvar::CAN_mini_var::FR_door;
+  d.Door_RL=@sysvar::CAN_mini_var::RL_door;
+  d.Door_RR=@sysvar::CAN_mini_var::RR_door;
+  s.seat_belt_status=@sysvar::CAN_mini_var::seat_belt;
+  output(d);
+  output(s);
+}
+  
+

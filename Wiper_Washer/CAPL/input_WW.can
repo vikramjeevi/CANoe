@@ -1,0 +1,28 @@
+﻿/*@!Encoding:65001*/
+includes
+{
+  
+}
+
+variables
+{
+  msTimer time;
+  message fluid_battery_rain msg;
+}
+on start
+{
+  setTimer(time,1000);
+}
+on timer time
+{
+  setTimer(time,1000);
+  
+  msg.Fluid_tank_status=0;
+  msg.Battery_status=1;
+  msg.Rain_status=0;
+  
+  msg.Front_switch=1;
+  msg.Rear_switch=1;
+  output(msg);
+}
+

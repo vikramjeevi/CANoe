@@ -1,0 +1,29 @@
+﻿/*@!Encoding:65001*/
+includes
+{
+  
+}
+
+variables
+{
+  message CAN::Wheel_speed_msg w;
+  msTimer time;
+  
+}
+on start
+{
+  setTimer(time,1000);
+   write("ABS ECU started");
+}
+on timer time
+{
+  
+  setTimer(time,1000);
+  w.Wheel_speed_FL=@sysvar::CAN_mini_var::speed;
+  w.Wheel_speed_FR=@sysvar::CAN_mini_var::speed;
+  w.Wheel_speed_RL=@sysvar::CAN_mini_var::speed;
+  w.Wheel_speed_RR=@sysvar::CAN_mini_var::speed;
+  output(w);
+  
+}
+

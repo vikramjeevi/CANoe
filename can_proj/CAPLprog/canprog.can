@@ -1,0 +1,54 @@
+﻿/*@!Encoding:65001*/
+includes
+{
+  
+}
+
+variables
+{
+  msTimer mytime;
+  //message 0x123 canmsg1; 
+  message doorStatus1 door;
+  int count=0;
+}
+on start
+{
+  setTimer(mytime,900);
+  write("Started");
+}
+on message doorStatus1{
+  door.dlc=4;
+  
+  
+}
+/*on message 0x123{
+  canmsg1.dlc=3;
+  canmsg1.byte(0)=0xAA;
+  canmsg1.byte(1)=0xCC;
+  canmsg1.byte(2)=0xEE;
+}*/
+
+on timer mytime
+{
+  setTimer(mytime,900);
+  count+=1;
+  if(count%2==0)
+  {
+    door.byte(0)=12;
+  door.byte(1)=door.byte(0)&0xAA;
+  door.byte(2)=door.byte(1)&0xAA;
+  door.byte(3)=door.byte(2)&0xAA;
+  }
+  else
+  {
+  door.byte(0)=12;
+  door.byte(1)=door.byte(0)&0x55;
+  door.byte(2)=door.byte(1)&0x55;
+  door.byte(3)=door.byte(2)&0x55;
+  }
+  output(door);
+}
+on key 's'
+{
+  cancelTimer(mytime);
+}

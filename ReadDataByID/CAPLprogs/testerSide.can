@@ -1,0 +1,52 @@
+﻿/*@!Encoding:65001*/
+includes
+{
+  
+}
+
+variables
+{
+  msTimer mytime;
+  message 0x300 tester;
+}
+on start
+{
+  setTimer(mytime,1000);
+  write("Tester started");
+}
+on message 0x300
+{
+  tester.dlc=4;
+}
+
+/*on sysvar canvar::pos
+{
+  tester.byte(0)=0x03;
+  tester.byte(1)=0x22;
+  tester.byte(2)=0xAB;
+  tester.byte(3)=0xCD;
+  output(tester);
+}
+on sysvar canvar::neg
+{
+  tester.byte(0)=0x03;
+  tester.byte(1)=0x32;
+  tester.byte(2)=0xAB;
+  tester.byte(3)=0xCD;
+  output(tester); 
+}
+*/
+on timer mytime
+{
+  setTimer(mytime,1000);
+  tester.byte(0)=@sysvar::dd_var::byte0;
+  tester.byte(1)=@sysvar::dd_var::byte1;
+  tester.byte(2)=@sysvar::dd_var::byte2;
+  tester.byte(3)=@sysvar::dd_var::byte3;
+  output(tester);
+  
+}
+on key 's'
+{
+  cancelTimer(mytime); 
+}

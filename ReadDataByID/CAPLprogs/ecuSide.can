@@ -1,0 +1,64 @@
+﻿/*@!Encoding:65001*/
+includes
+{
+  
+}
+
+variables
+{
+  message 0x400 ecu;
+}
+
+on message 0x300
+{
+  if((this.byte(0)==0x03)&&(this.byte(1)==0x22) && (this.byte(2)==0xAB && this.byte(3)==0xCD))
+  {
+    ecu.dlc=7;
+    ecu.byte(0)=0x06;
+    ecu.byte(1)=this.byte(1)|0x40;
+    ecu.byte(2)=this.byte(2);
+    ecu.byte(3)=this.byte(3);
+    ecu.byte(4)=0x12;
+    ecu.byte(5)=0x34;
+    ecu.byte(6)=0x56;
+    ecu.byte(7)=0x78;
+    output(ecu);
+    write("Positive response");
+  }
+  else if((this.byte(0)!=0x03))
+  {
+    ecu.dlc=4;
+    ecu.byte(0)=0x03;
+    ecu.byte(1)=0x7F;
+    ecu.byte(2)=this.byte(1);
+    ecu.byte(3)=0x13;
+    output(ecu);
+    write("Negative response - invalid message length");
+  }
+  else if((this.byte(1)!=0x22) && (this.byte(2)==0xAB && this.byte(3)==0xCD))
+  {
+    ecu.dlc=4;
+    ecu.byte(0)=0x03;
+    ecu.byte(1)=0x7F;
+    ecu.byte(2)=this.byte(1);
+    ecu.byte(3)=0x11;
+    output(ecu);
+    write("Negative response - Service not suppored");
+    
+  }
+  else
+  {
+    ecu.dlc=8;
+    ecu.byte(0)=0x00;
+    ecu.byte(1)=0x00;
+    ecu.byte(2)=0x00;
+    ecu.byte(3)=0x00;
+    ecu.byte(4)=0x00;
+    ecu.byte(5)=0x00;
+    ecu.byte(6)=0x00;
+    ecu.byte(7)=0x00;
+    output(ecu);
+    
+  }
+}
+
